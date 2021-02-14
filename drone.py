@@ -3,14 +3,15 @@ from socket import socket,AF_INET,SOCK_DGRAM
 from threading import Thread
 from time import sleep
 import cv2
+from os import system
 
 class Drone:
 	def __init__(self):
 		ip = "192.168.10.1"
 		self.addr = (ip,8889)
-		self.video_addr = ("192.168.10.2",11111)
+		self.video_addr = ("192.168.10.3",11111)
 		self.server = socket(AF_INET,SOCK_DGRAM)
-		self.server.bind(("192.168.10.2",8889))
+		self.server.bind(("192.168.10.3",8889))
 		self.x,self.y,self.z,self.t = (0,0,0,0)
 		self.in_air = 0
 		print("Waiting for ok response")
@@ -19,7 +20,7 @@ class Drone:
 			self.send("command")
 		print("Drone Initiated")
 
-		#Thread(target=self.stream,daemon=True).start()
+		Thread(target=self.stream,daemon=True).start()
 		Thread(target=self.recv_loop,daemon=True).start()
 		self.run()
 
@@ -39,14 +40,24 @@ class Drone:
 			sleep(1)
 		if keydown("l"):
 			self.send("land")
-		if keydown("right") and self.x < 100:
-			self.x += 1
-		if keydown("left") and self.x > -100:
-			self.x -= 1
-		if keydown("up") and self.y < 100:
-			self.y += 1
-		if keydown("down") and self.y > -100:
-			self.y -= 1
+		if keydown("shift"):
+			if keydown("right"):
+				self.send("flip r")
+			if keydown("left"):
+				self.send("flip l")
+			if keydown("up"):
+				self.send("flip f")
+			if keydown("down"):
+				self.send("flip b")
+		else:
+			if keydown("right") and self.x < 100:
+				self.x += 1
+			if keydown("left") and self.x > -100:
+				self.x -= 1
+			if keydown("up") and self.y < 100:
+				self.y += 1
+			if keydown("down") and self.y > -100:
+				self.y -= 1
 		if keydown("w") and self.z < 100:
 			self.z += 1
 		if keydown("s") and self.z > -100:
@@ -65,7 +76,6 @@ class Drone:
 		self.in_air = 0
 
 	def send(self,command):
-		print(command)
 		self.server.sendto(command.encode("utf-8"),self.addr)
 
 	def update(self):
@@ -103,4 +113,7 @@ class Drone:
 	def stay_alive(self):
 		while True:
 			self.send("command")
-			sleep(1)
+			self.send("battery?")
+			system("clear")
+			print("battery:",self.recv())
+			sleep(10)

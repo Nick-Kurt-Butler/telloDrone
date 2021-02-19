@@ -4,6 +4,9 @@ from threading import Thread
 from time import sleep
 import cv2
 from os import system
+import numpy as np
+from matplotlib import pyplot as plt
+from sklearn.cluster import MiniBatchKMeans
 
 class Drone:
 	def __init__(self):
@@ -38,26 +41,32 @@ class Drone:
 		if keydown("space"):
 			self.send("takeoff")
 			sleep(1)
+		if keydown("z"):
+			sleep(.1)
+			self.send("flip l")
+			sleep(.1)
+		if keydown("x"):
+			sleep(.1)
+			self.send("flip f")
+			sleep(.1)
+		if keydown("c"):
+			sleep(.1)
+			self.send("flip r")
+			sleep(.1)
+		if keydown("v"):
+			sleep(.1)
+			self.send("flip b")
+			sleep(.1)
 		if keydown("l"):
 			self.send("land")
-		if keydown("shift"):
-			if keydown("right"):
-				self.send("flip r")
-			if keydown("left"):
-				self.send("flip l")
-			if keydown("up"):
-				self.send("flip f")
-			if keydown("down"):
-				self.send("flip b")
-		else:
-			if keydown("right") and self.x < 100:
-				self.x += 1
-			if keydown("left") and self.x > -100:
-				self.x -= 1
-			if keydown("up") and self.y < 100:
-				self.y += 1
-			if keydown("down") and self.y > -100:
-				self.y -= 1
+		if keydown("right") and self.x < 100:
+			self.x += 1
+		if keydown("left") and self.x > -100:
+			self.x -= 1
+		if keydown("up") and self.y < 100:
+			self.y += 1
+		if keydown("down") and self.y > -100:
+			self.y -= 1
 		if keydown("w") and self.z < 100:
 			self.z += 1
 		if keydown("s") and self.z > -100:
@@ -82,6 +91,9 @@ class Drone:
 		while True:
 			command = "rc "+str(self.x)+" "+str(self.y)
 			command += " "+str(self.z)+" "+str(self.t)
+			if keydown("f") and keydown("right"):
+				self.send("flip r")
+				print(self.recv())
 			self.send(command)
 			self.x,self.y,self.z,self.t = (0,0,0,0)
 			sleep(0.1)
@@ -103,12 +115,35 @@ class Drone:
 		print("streaming ok")
 		while True :
 			ret, frame = cap.read()
-			#img = cv2.resize(frame, (720, 960))
 			cv2.imshow("Operation Overthrow Feed", frame)
 			if cv2.waitKey(1) == 27:
 				break
 		cap.release()
 		cv2.destroyAllWindows()
+
+	def follow_color(self,color,frame):
+		"""
+		Using a numpy frame and color choice the
+		drone with auto adjust to follow a given
+		color.
+		"""
+		return
+
+	def video_data(self):
+		self.send("streamon")
+		while self.recv() != "ok":
+			self.send("streamon")
+		cap = cv2.VideoCapture('udp://192.168.10.1:11111')
+		while True :
+			ret, frame = cap.read()
+			frame = np.array(frame)
+			"""
+			Put function here to control drone using camera data
+
+
+			"""
+		cap.release()
+
 
 	def stay_alive(self):
 		while True:

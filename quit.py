@@ -1,5 +1,3 @@
-from easytello import tello
-
-drone = tello.Tello()
-
-drone.emergency()
+from drone import Drone()
+drone = Drone()
+drone.kill()

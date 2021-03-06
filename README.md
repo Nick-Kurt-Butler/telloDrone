@@ -11,20 +11,20 @@ Inside the class there are three main functions and some other smaller ones.
 This function allows for joystick control from keyboard input. Below is the key
 mapping to a drone action.
 
-space :takeoff
-'l'   :land
-'q'   :emergency kill
-left  :left
-right :right
-up'   :forward
-down  :backward
-'w'   :up
-'s'   :down
-'a'   :rotate left
-'d'   :rotate right
-'z'   :flip left
-'x'   :flip forward
-'c'   :flip right
+space :takeoff  
+'l'   :land  
+'q'   :emergency kill  
+left  :left  
+right :right  
+up'   :forward  
+down  :backward  
+'w'   :up  
+'s'   :down  
+'a'   :rotate left  
+'d'   :rotate right  
+'z'   :flip left  
+'x'   :flip forward  
+'c'   :flip right  
 'v'   :flip backward
 
 ```python

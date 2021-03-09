@@ -43,21 +43,21 @@ class Drone:
 		if keydown("l"):
 			self.send("land")
 		if keydown("right") and self.x < 100:
-			self.x += 1
+			self.x += 3
 		if keydown("left") and self.x > -100:
-			self.x -= 1
+			self.x -= 3
 		if keydown("up") and self.y < 100:
-			self.y += 1
+			self.y += 3
 		if keydown("down") and self.y > -100:
-			self.y -= 1
+			self.y -= 3
 		if keydown("w") and self.z < 100:
-			self.z += 1
+			self.z += 3
 		if keydown("s") and self.z > -100:
-			self.z -= 1
+			self.z -= 3
 		if keydown("d") and self.t < 100:
-			self.t += 1
+			self.t += 3
 		if keydown("a") and self.t > -100:
-			self.t -= 1
+			self.t -= 3
 
 	def takeoff(self):
 		self.send("takeoff")
@@ -74,7 +74,6 @@ class Drone:
 				command = "rc "+str(self.x)+" "+str(self.y)
 				command += " "+str(self.z)+" "+str(self.t)
 				if keydown('z') or keydown('x') or keydown('c') or keydown('v'):
-					sleep(.5)
 					if keydown("z"):
 						self.send("flip l")
 					if keydown("x"):
@@ -83,7 +82,7 @@ class Drone:
 						self.send("flip r")
 					if keydown("v"):
 						self.send("flip b")
-					sleep(.5)
+					sleep(0.1)
 				elif keydown("space"):
 					self.send("takeoff")
 				elif keydown("l"):
@@ -124,7 +123,7 @@ class Drone:
 		gets center of mass of color in an rbg array
 		"""
 		data = np.array(self.frame)
-		t = 15 # range of color threshold
+		t = 20 # range of color threshold
 		bin_map = cv2.inRange(data,color-t,color+t)
 		y,x = ndimage.measurements.center_of_mass(bin_map)
 		w,h = bin_map.shape
@@ -133,9 +132,9 @@ class Drone:
 		print(num)
 		if x == x:
 			if x > 10:
-				self.t += 3
+				self.t += 5
 			elif x < -10:
-				self.t -= 3
+				self.t -= 5
 		# y 480
 
 	def connect_video(self):

@@ -42,21 +42,21 @@ class Drone:
 			sleep(1)
 		if keydown("l"):
 			self.send("land")
-		if keydown("right") and self.x < 100:
+		if keydown("right") and self.x < 97:
 			self.x += 3
-		if keydown("left") and self.x > -100:
+		if keydown("left") and self.x > -97:
 			self.x -= 3
-		if keydown("up") and self.y < 100:
+		if keydown("up") and self.y < 97:
 			self.y += 3
-		if keydown("down") and self.y > -100:
+		if keydown("down") and self.y > -97:
 			self.y -= 3
-		if keydown("w") and self.z < 100:
+		if keydown("w") and self.z < 97:
 			self.z += 3
-		if keydown("s") and self.z > -100:
+		if keydown("s") and self.z > -97:
 			self.z -= 3
-		if keydown("d") and self.t < 100:
+		if keydown("d") and self.t < 97:
 			self.t += 3
-		if keydown("a") and self.t > -100:
+		if keydown("a") and self.t > -97:
 			self.t -= 3
 
 	def takeoff(self):
@@ -128,8 +128,8 @@ class Drone:
 		y,x = ndimage.measurements.center_of_mass(bin_map)
 		w,h = bin_map.shape
 		num = (np.sum(bin_map)/(w*h))*100
-		x -= 360
 		print(num)
+		x -= 360
 		if x == x:
 			if x > 10:
 				self.t += 5

@@ -2,6 +2,10 @@
 
 ## Introduction
 
+This repository contains API calls to control a tello drone and a special functionally that uses kmeans clustering the have the droe automatically follow a color put in front of the drone.
+
+## API Reference
+
 This repository contains a drone class.
 
 Inside the class there are three main functions and some other smaller ones.
